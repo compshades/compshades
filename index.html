@@ -15,17 +15,27 @@
             background-size: cover;
             color: #fff;
             height: 100%;
+            overflow: hidden;
+        }
+
+        /* Blur Effect */
+        .blurred {
+            filter: blur(8px);
+            pointer-events: none;
+            position: relative;
         }
 
         header {
             display: flex;
             justify-content: space-between;
             padding: 20px;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 100;
         }
 
         .header-container h1 {
             font-size: 36px;
+            color: #fff;
         }
 
         .discord-link a {
@@ -139,6 +149,7 @@
             border-radius: 10px;
             width: 50%;
             margin: 30px auto;
+            z-index: 99;
         }
 
         .account-creation form {
@@ -179,6 +190,26 @@
             width: 100%;
             color: #fff;
         }
+
+        /* Hide Preview Image Initially */
+        #reshade-preview {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .preview-button {
+            background-color: #5a6ab0;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .preview-button:hover {
+            background-color: #4a5f9a;
+        }
     </style>
 </head>
 <body>
@@ -193,14 +224,17 @@
     </header>
 
     <!-- Main Content -->
-    <main>
+    <main class="blurred">
         <div class="search-bar">
             <input type="text" placeholder="Search Reshades..." id="search">
         </div>
 
-        <div class="reshades-preview">
-            <img src="https://i.imgur.com/ray0nvn.png" alt="Reshade Preview">
-        </div>
+        <!-- Reshade Preview Section -->
+        <section id="reshade-preview">
+            <img src="https://i.imgur.com/ray0nvn.png" alt="Reshade Preview" id="preview-img">
+        </section>
+
+        <button class="preview-button" id="preview-btn">Click Here to Preview</button>
 
         <section class="pricing">
             <h2>Pricing</h2>
@@ -232,7 +266,7 @@
         </section>
 
         <!-- Account Creation Section -->
-        <section class="account-creation">
+        <section class="account-creation" id="account-form-section">
             <h2>Create an Account</h2>
             <form id="account-form">
                 <label for="username">Username:</label>
@@ -265,11 +299,21 @@
         let cart = [];
         let orderId = 0;
 
+        // Handle Account Creation to Remove Blur
+        document.getElementById('account-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            // Simulate user login success
+            document.querySelector('main').classList.remove('blurred');
+            document.getElementById('account-form-section').style.display = 'none'; // Hide the form
+        });
+
+        // Add item to cart
         function addToCart(item, price) {
             cart.push({ item, price });
             updateCart();
         }
 
+        // Update the cart UI
         function updateCart() {
             const cartItems = document.getElementById('cart-items');
             cartItems.innerHTML = '';
@@ -283,15 +327,22 @@
             document.getElementById('total-price').textContent = totalPrice;
         }
 
+        // Checkout process
         function checkout() {
             orderId = Math.floor(Math.random() * 1000000); // Generate a random order ID
             document.getElementById('order-id').textContent = orderId;
             document.getElementById('checkout-modal').style.display = 'block';
         }
 
+        // Close modal
         function closeModal() {
             document.getElementById('checkout-modal').style.display = 'none';
         }
+
+        // Show Preview when "Click Here to Preview" is clicked
+        document.getElementById('preview-btn').addEventListener('click', function() {
+            document.getElementById('reshade-preview').style.display = 'block';
+        });
     </script>
 </body>
 </html>
