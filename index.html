@@ -19,12 +19,13 @@
             transition: filter 0.3s ease-in-out;
         }
 
-        /* Blur Effect */
+        /* Blurred Background */
         .blurred {
             filter: blur(8px);
             pointer-events: none;
         }
 
+        /* Header */
         header {
             display: flex;
             justify-content: space-between;
@@ -51,134 +52,90 @@
             background-color: #5a6ab0;
         }
 
-        /* Search Bar */
-        .search-bar {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .search-bar input {
-            padding: 10px;
-            font-size: 18px;
-            width: 50%;
-            border-radius: 5px;
-            border: none;
-        }
-
-        /* Reshade Item Section */
-        .reshade-item {
-            text-align: center;
-            margin: 20px;
-        }
-
-        .reshade-item button {
+        /* Buttons and Links */
+        .btn {
             padding: 10px 20px;
-            background-color: #7289da;
-            color: #fff;
+            background-color: #5a6ab0;
+            color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
-        .reshade-item button:hover {
-            background-color: #5a6ab0;
-        }
-
-        /* Cart Section */
-        .cart {
-            text-align: center;
-            margin-top: 50px;
-        }
-
-        .cart button {
-            padding: 10px 20px;
-            background-color: #5a6ab0;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .cart button:hover {
+        .btn:hover {
             background-color: #4a5f9a;
         }
 
-        /* Modal for Checkout */
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
-            z-index: 1;
-            left: 0;
+            z-index: 9999;
             top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.7);
         }
 
         .modal-content {
-            background-color: #fefefe;
-            padding: 20px;
-            margin: 15% auto;
-            border-radius: 5px;
+            background-color: #fff;
+            padding: 30px;
+            margin: 10% auto;
             width: 80%;
             max-width: 500px;
+            border-radius: 10px;
             color: #000;
         }
 
         .close {
-            color: #aaa;
-            font-size: 28px;
-            font-weight: bold;
             position: absolute;
-            top: 0;
-            right: 10px;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
+            top: 10px;
+            right: 20px;
+            font-size: 24px;
             cursor: pointer;
         }
 
-        /* Account Creation Form */
-        .account-creation {
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 20px;
-            border-radius: 10px;
-            width: 50%;
-            margin: 30px auto;
-            z-index: 99;
-        }
-
-        .account-creation form {
+        /* Sign In / Sign Up Forms */
+        .account-form {
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding: 20px;
         }
 
-        .account-creation input {
+        .account-form input {
             padding: 10px;
-            font-size: 16px;
             margin: 10px 0;
-            width: 100%;
+            width: 80%;
             border-radius: 5px;
-            border: none;
+            border: 1px solid #ccc;
         }
 
-        .account-creation button {
-            background-color: #7289da;
-            color: #fff;
+        .account-form button {
             padding: 10px 20px;
-            border-radius: 5px;
+            background-color: #7289da;
+            color: white;
             border: none;
-            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
-        .account-creation button:hover {
+        .account-form button:hover {
             background-color: #5a6ab0;
+        }
+
+        /* Cart & Checkout Section */
+        .cart {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        /* Pricing & Items */
+        .reshade-item {
+            text-align: center;
+            margin: 20px;
         }
 
         /* Footer */
@@ -198,20 +155,6 @@
             margin-top: 20px;
             text-align: center;
         }
-
-        .preview-button {
-            background-color: #5a6ab0;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .preview-button:hover {
-            background-color: #4a5f9a;
-        }
     </style>
 </head>
 <body>
@@ -226,17 +169,13 @@
     </header>
 
     <!-- Main Content -->
-    <main class="blurred">
-        <div class="search-bar">
-            <input type="text" placeholder="Search Reshades..." id="search">
-        </div>
-
+    <main id="main-content" class="blurred">
         <!-- Reshade Preview Section -->
         <section id="reshade-preview">
             <img src="https://i.imgur.com/ray0nvn.png" alt="Reshade Preview" id="preview-img">
         </section>
 
-        <button class="preview-button" id="preview-btn">Click Here to Preview</button>
+        <button class="btn" id="preview-btn">Click Here to Preview</button>
 
         <section class="pricing">
             <h2>Pricing</h2>
@@ -246,17 +185,17 @@
         <!-- Reshade Items -->
         <section class="reshade-item">
             <h3>Reshade Pack 1 - $5</h3>
-            <button onclick="addToCart('Reshade Pack 1', 5)">Add to Cart</button>
+            <button class="btn" onclick="addToCart('Reshade Pack 1', 5)">Add to Cart</button>
         </section>
 
         <section class="reshade-item">
             <h3>Reshade Pack 2 - $10</h3>
-            <button onclick="addToCart('Reshade Pack 2', 10)">Add to Cart</button>
+            <button class="btn" onclick="addToCart('Reshade Pack 2', 10)">Add to Cart</button>
         </section>
 
         <section class="reshade-item">
             <h3>Reshade Pack 3 - $15</h3>
-            <button onclick="addToCart('Reshade Pack 3', 15)">Add to Cart</button>
+            <button class="btn" onclick="addToCart('Reshade Pack 3', 15)">Add to Cart</button>
         </section>
 
         <!-- Cart Section -->
@@ -264,28 +203,23 @@
             <h2>Your Cart</h2>
             <ul id="cart-items"></ul>
             <p>Total: $<span id="total-price">0</span></p>
-            <button onclick="checkout()">Checkout</button>
-        </section>
-
-        <!-- Account Creation Section -->
-        <section class="account-creation" id="account-form-section">
-            <h2>Create an Account</h2>
-            <form id="account-form">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-                <button type="submit">Create Account</button>
-            </form>
+            <button class="btn" onclick="checkout()">Checkout</button>
         </section>
     </main>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2025 Custom Reshades Shop. All rights reserved.</p>
-    </footer>
+    <!-- Sign In / Sign Up Modal -->
+    <div id="account-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Create an Account</h2>
+            <div class="account-form">
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button onclick="createAccount()">Sign Up</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Checkout Modal -->
     <div id="checkout-modal" class="modal">
@@ -297,17 +231,21 @@
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Custom Reshades Shop. All rights reserved.</p>
+    </footer>
+
     <script>
         let cart = [];
         let orderId = 0;
 
-        // Handle Account Creation to Remove Blur
-        document.getElementById('account-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            // Simulate user login success
+        // Account Creation (Sign Up)
+        function createAccount() {
+            // For demo purposes, simulate account creation success
             document.querySelector('main').classList.remove('blurred');
-            document.getElementById('account-form-section').style.display = 'none'; // Hide the form
-        });
+            document.getElementById('account-modal').style.display = 'none';
+        }
 
         // Add item to cart
         function addToCart(item, price) {
@@ -320,7 +258,7 @@
             const cartItems = document.getElementById('cart-items');
             cartItems.innerHTML = '';
             let totalPrice = 0;
-            cart.forEach((product, index) => {
+            cart.forEach((product) => {
                 const listItem = document.createElement('li');
                 listItem.textContent = `${product.item} - $${product.price}`;
                 cartItems.appendChild(listItem);
@@ -339,12 +277,18 @@
         // Close modal
         function closeModal() {
             document.getElementById('checkout-modal').style.display = 'none';
+            document.getElementById('account-modal').style.display = 'none';
         }
 
         // Show Preview when "Click Here to Preview" is clicked
         document.getElementById('preview-btn').addEventListener('click', function() {
             document.getElementById('reshade-preview').style.display = 'block';
         });
+
+        // Show Sign Up Modal when page loads
+        window.onload = function() {
+            document.getElementById('account-modal').style.display = 'block';
+        }
     </script>
 </body>
 </html>
