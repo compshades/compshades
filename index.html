@@ -17,17 +17,26 @@
             height: 100vh;
             color: #fff;
             transition: filter 0.3s ease-in-out;
-            overflow-x: hidden;
         }
 
-        /* Main Layout */
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 60px;
+        /* Blur Effect */
+        .blurred {
+            filter: blur(8px);
+            pointer-events: none;
         }
 
+        /* Blue Overlay */
+        .blue-overlay {
+            background-color: rgba(0, 0, 255, 0.7);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+        }
+
+        /* Header */
         header {
             width: 100%;
             padding: 20px;
@@ -57,6 +66,69 @@
             background-color: #5a6ab0;
         }
 
+        /* Sign Up / Sign In Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 30px;
+            margin: 10% auto;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+            color: #000;
+            text-align: center;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+        }
+
+        /* Sign Up / Sign In Form */
+        .form-container input {
+            padding: 10px;
+            margin: 10px 0;
+            width: 80%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .form-container button {
+            padding: 10px 20px;
+            background-color: #7289da;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #5a6ab0;
+        }
+
+        /* Product Section */
         .main-content {
             width: 80%;
             display: grid;
@@ -92,18 +164,10 @@
             margin-bottom: 20px;
         }
 
-        .btn {
-            padding: 10px 20px;
-            background-color: #5a6ab0;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn:hover {
-            background-color: #4a5f9a;
+        /* Preview Section */
+        #preview-img {
+            display: none;
+            margin-top: 20px;
         }
 
         /* Cart Section */
@@ -128,73 +192,19 @@
             margin-top: 10px;
         }
 
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 9999;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            padding: 30px;
-            margin: 10% auto;
-            width: 80%;
-            max-width: 500px;
-            border-radius: 10px;
-            color: #000;
-            text-align: center;
-        }
-
-        .close {
-            color: #aaa;
-            font-size: 28px;
-            font-weight: bold;
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            cursor: pointer;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-        }
-
-        /* Sign Up / Sign In */
-        .form-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .form-container input {
-            padding: 10px;
-            margin: 10px 0;
-            width: 80%;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        .form-container button {
+        /* Buttons */
+        .btn {
             padding: 10px 20px;
-            background-color: #7289da;
-            color: #fff;
+            background-color: #5a6ab0;
+            color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
-        .form-container button:hover {
-            background-color: #5a6ab0;
+        .btn:hover {
+            background-color: #4a5f9a;
         }
 
         /* Footer */
@@ -220,45 +230,58 @@
         </div>
     </header>
 
+    <!-- Sign In / Sign Up Modal -->
+    <div id="account-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Create an Account</h2>
+            <div class="form-container">
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button onclick="signUp()">Sign Up</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blue Overlay -->
+    <div id="blue-overlay" class="blue-overlay"></div>
+
     <!-- Main Content -->
-    <div id="main-content" class="container blurred">
-        <!-- Sign Up / Sign In Modal -->
-        <div id="account-modal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeModal()">&times;</span>
-                <h2>Create an Account</h2>
-                <div class="form-container">
-                    <input type="text" id="username" placeholder="Username" required>
-                    <input type="email" id="email" placeholder="Email" required>
-                    <input type="password" id="password" placeholder="Password" required>
-                    <button onclick="signUp()">Sign Up</button>
-                </div>
-            </div>
-        </div>
+    <div id="main-content">
+        <!-- Reshade Preview Section -->
+        <section id="reshade-preview">
+            <img src="https://i.imgur.com/ray0nvn.png" alt="Reshade Preview" id="preview-img">
+        </section>
 
-        <!-- Products Grid -->
-        <div class="main-content">
-            <div class="product-card">
-                <img src="https://i.imgur.com/ray0nvn.png" alt="Reshade Preview">
-                <h3>Reshade Pack 1</h3>
-                <p>$5.00</p>
-                <button class="btn" onclick="addToCart('Reshade Pack 1', 5)">Add to Cart</button>
-            </div>
+        <button class="btn" id="preview-btn">Click Here to Preview</button>
 
-            <div class="product-card">
-                <img src="https://i.imgur.com/ray0nvn.png" alt="Reshade Preview">
-                <h3>Reshade Pack 2</h3>
-                <p>$10.00</p>
-                <button class="btn" onclick="addToCart('Reshade Pack 2', 10)">Add to Cart</button>
-            </div>
+        <section class="pricing">
+            <h2>Pricing</h2>
+            <p>Custom reshades available from $5 to $15. Choose your design!</p>
+        </section>
 
-            <div class="product-card">
-                <img src="https://i.imgur.com/ray0nvn.png" alt="Reshade Preview">
-                <h3>Reshade Pack 3</h3>
-                <p>$15.00</p>
-                <button class="btn" onclick="addToCart('Reshade Pack 3', 15)">Add to Cart</button>
-            </div>
-        </div>
+        <!-- Reshade Items -->
+        <section class="product-card">
+            <img src="https://i.imgur.com/ray0nvn.png" alt="Reshade Preview">
+            <h3>Reshade Pack 1</h3>
+            <p>$5.00</p>
+            <button class="btn" onclick="addToCart('Reshade Pack 1', 5)">Add to Cart</button>
+        </section>
+
+        <section class="product-card">
+            <img src="https://i.imgur.com/ray0nvn.png" alt="Reshade Preview">
+            <h3>Reshade Pack 2</h3>
+            <p>$10.00</p>
+            <button class="btn" onclick="addToCart('Reshade Pack 2', 10)">Add to Cart</button>
+        </section>
+
+        <section class="product-card">
+            <img src="https://i.imgur.com/ray0nvn.png" alt="Reshade Preview">
+            <h3>Reshade Pack 3</h3>
+            <p>$15.00</p>
+            <button class="btn" onclick="addToCart('Reshade Pack 3', 15)">Add to Cart</button>
+        </section>
 
         <!-- Cart Section -->
         <div class="cart">
@@ -266,16 +289,6 @@
             <ul id="cart-items"></ul>
             <p class="total">Total: $<span id="total-price">0</span></p>
             <button class="btn" onclick="checkout()">Checkout</button>
-        </div>
-    </div>
-
-    <!-- Checkout Modal -->
-    <div id="checkout-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2>Checkout Complete!</h2>
-            <p>Thank you for your purchase! Your order ID is: <span id="order-id"></span></p>
-            <p>To complete your purchase, please join our <a href="https://discord.gg/3QJuFsu4" target="_blank">Discord</a> and create a ticket in <strong>#🎫support-tickets</strong>.</p>
         </div>
     </div>
 
@@ -288,9 +301,10 @@
         let cart = [];
         let orderId = 0;
 
-        // Handle Sign Up
+        // Sign Up function
         function signUp() {
-            document.querySelector('main').classList.remove('blurred');
+            document.querySelector('body').classList.remove('blurred');
+            document.getElementById('blue-overlay').style.display = 'none'; // Remove blue overlay
             document.getElementById('account-modal').style.display = 'none';
         }
 
@@ -300,7 +314,7 @@
             updateCart();
         }
 
-        // Update cart UI
+        // Update Cart UI
         function updateCart() {
             const cartItems = document.getElementById('cart-items');
             cartItems.innerHTML = '';
@@ -327,7 +341,12 @@
             document.getElementById('account-modal').style.display = 'none';
         }
 
-        // Show Sign Up Modal
+        // Show Preview when clicked
+        document.getElementById('preview-btn').addEventListener('click', function() {
+            document.getElementById('preview-img').style.display = 'block';
+        });
+
+        // Show Sign Up Modal on Load
         window.onload = function() {
             document.getElementById('account-modal').style.display = 'block';
         }
