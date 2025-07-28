@@ -210,7 +210,7 @@
             <h3>Reshade Pack 1</h3>
             <p>$5.00</p>
             <button onclick="previewProduct('https://i.imgur.com/ray0nvn.png')">Click Here to Preview</button>
-            <button onclick="addToCart('Reshade Pack 1', 5)">Add to Cart</button>
+            <button onclick="handleCheckout('Reshade Pack 1', 5)">Checkout</button>
         </div>
         <div class="product-card">
             <img src="https://i.imgur.com/WXB7Kxf.png" alt="Reshade Pack 2" id="preview-image">
@@ -265,14 +265,10 @@
             previewSection.style.display = 'block';
         }
 
-        // Handle Checkout for Out-of-Stock Packs
+        // Handle Checkout for All Packs
         function handleCheckout(item, price) {
-            if (item === "Reshade Pack 2" || item === "Reshade Pack 3") {
-                alert("Sorry, these packs are out of stock. Please complete your purchase via Cash App.");
-                window.location.href = "https://cash.app/$Ethan733nX";
-            } else {
-                addToCart(item, price);
-            }
+            alert("Please complete your purchase via Cash App.");
+            window.location.href = "https://cash.app/$Ethan733nX";
         }
 
         // Update Cart
