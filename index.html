@@ -217,14 +217,14 @@
             <h3>Reshade Pack 2</h3>
             <p>$10.00</p>
             <button onclick="previewProduct('https://i.imgur.com/ray0nvn.png')">Click Here to Preview</button>
-            <button onclick="addToCart('Reshade Pack 2', 10)" id="pack2-checkout" disabled>Out of Stock</button>
+            <button onclick="handleCheckout('Reshade Pack 2', 10)">Checkout</button>
         </div>
         <div class="product-card">
             <img src="https://i.imgur.com/WXB7Kxf.png" alt="Reshade Pack 3" id="preview-image">
             <h3>Reshade Pack 3</h3>
             <p>$15.00</p>
             <button onclick="previewProduct('https://i.imgur.com/ray0nvn.png')">Click Here to Preview</button>
-            <button onclick="addToCart('Reshade Pack 3', 15)" id="pack3-checkout" disabled>Out of Stock</button>
+            <button onclick="handleCheckout('Reshade Pack 3', 15)">Checkout</button>
         </div>
     </div>
 
@@ -265,6 +265,16 @@
             previewSection.style.display = 'block';
         }
 
+        // Handle Checkout for Out-of-Stock Packs
+        function handleCheckout(item, price) {
+            if (item === "Reshade Pack 2" || item === "Reshade Pack 3") {
+                alert("Sorry, these packs are out of stock. Please complete your purchase via Cash App.");
+                window.location.href = "https://cash.app/$Ethan733nX";
+            } else {
+                addToCart(item, price);
+            }
+        }
+
         // Update Cart
         function addToCart(item, price) {
             cart.push({ item, price });
@@ -289,14 +299,7 @@
 
         // Checkout function
         function checkout() {
-            // If the checkout is for pack 2 or 3, redirect to Cash App
-            const cartItems = cart.map(item => item.item);
-            if (cartItems.includes("Reshade Pack 2") || cartItems.includes("Reshade Pack 3")) {
-                alert("Sorry, these packs are out of stock. Please complete your purchase via Cash App.");
-                window.location.href = "https://cash.app/$Ethan733nX";
-            } else {
-                alert("Thank you for your purchase! Please make a ticket in Discord to complete your purchase. Join our Discord: https://discord.gg/3QJuFsu4");
-            }
+            alert("Thank you for your purchase! Please make a ticket in Discord to complete your purchase. Join our Discord: https://discord.gg/3QJuFsu4");
         }
 
         // Toggle Cart Popup
