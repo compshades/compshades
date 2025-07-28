@@ -49,7 +49,7 @@
             background-color: #5a6ab0;
         }
 
-        /* Sign In Modal */
+        /* Modal for Login/Signup */
         .modal {
             display: none;
             position: fixed;
@@ -120,6 +120,7 @@
             padding: 20px;
             text-align: center;
             transition: all 0.3s ease;
+            position: relative;
         }
 
         .product-card img {
@@ -146,6 +147,10 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
+        }
+
+        .product-card:hover {
+            outline: 3px solid #007bff;
         }
 
         .product-card button:hover {
@@ -310,56 +315,6 @@
         #checkout-btn-popup:hover:not(:disabled) {
             background: #005fbb;
         }
-
-        /* Modal */
-        #modal-overlay {
-            display:none;
-            position:fixed;
-            z-index:400;
-            left:0; top:0; right:0; bottom:0;
-            background:rgba(0,0,0,0.75);
-            backdrop-filter:blur(4px);
-            align-items:center;
-            justify-content:center;
-        }
-
-        #modal {
-            background:#222;
-            padding:32px 28px;
-            border-radius:16px;
-            box-shadow:0 0 30px #00aaffaa;
-            max-width:400px;
-            color:#0ff;
-            text-align:center;
-        }
-
-        #modal h2 {
-            margin-top:0;
-            margin-bottom:16px;
-            font-size:2rem;
-            color:#00ccff;
-        }
-
-        #modal p {
-            font-size:1.2rem;
-            margin-bottom:24px;
-        }
-
-        #modal button {
-            background:#00aaff;
-            border:none;
-            padding:12px 24px;
-            border-radius:12px;
-            font-weight:700;
-            font-size:1.1rem;
-            color:white;
-            cursor:pointer;
-            transition:background 0.3s ease;
-        }
-
-        #modal button:hover {
-            background:#008fcc;
-        }
     </style>
 </head>
 <body>
@@ -458,7 +413,7 @@
         function checkout() {
             orderId = Math.floor(Math.random() * 1000000);
             document.getElementById('order-id').textContent = orderId;
-            alert("Thank you for your purchase! Please proceed to the checkout page.");
+            alert("Thank you for your purchase! Please make a ticket in Discord to complete your purchase. Order ID: " + orderId);
         }
 
         // Show the sign-up modal when the page loads
