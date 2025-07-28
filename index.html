@@ -111,7 +111,7 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            background-color: #ff4444;
+            background-color: #007bff;
             color: white;
             font-size: 20px;
             padding: 15px;
@@ -188,6 +188,11 @@
             color: #fff;
         }
 
+        footer a {
+            color: #4c83ff;
+            text-decoration: none;
+        }
+
     </style>
 </head>
 <body>
@@ -201,22 +206,25 @@
     <!-- Product Container -->
     <div class="product-container">
         <div class="product-card">
-            <img src="https://i.imgur.com/WXB7Kxf.png" alt="Reshade Pack 1">
+            <img src="https://i.imgur.com/WXB7Kxf.png" alt="Reshade Pack 1" id="preview-image">
             <h3>Reshade Pack 1</h3>
             <p>$5.00</p>
             <button onclick="previewProduct('https://i.imgur.com/ray0nvn.png')">Click Here to Preview</button>
+            <button onclick="addToCart('Reshade Pack 1', 5)">Add to Cart</button>
         </div>
         <div class="product-card">
-            <img src="https://i.imgur.com/WXB7Kxf.png" alt="Reshade Pack 2">
+            <img src="https://i.imgur.com/WXB7Kxf.png" alt="Reshade Pack 2" id="preview-image">
             <h3>Reshade Pack 2</h3>
             <p>$10.00</p>
             <button onclick="previewProduct('https://i.imgur.com/ray0nvn.png')">Click Here to Preview</button>
+            <button onclick="addToCart('Reshade Pack 2', 10)">Add to Cart</button>
         </div>
         <div class="product-card">
-            <img src="https://i.imgur.com/WXB7Kxf.png" alt="Reshade Pack 3">
+            <img src="https://i.imgur.com/WXB7Kxf.png" alt="Reshade Pack 3" id="preview-image">
             <h3>Reshade Pack 3</h3>
             <p>$15.00</p>
             <button onclick="previewProduct('https://i.imgur.com/ray0nvn.png')">Click Here to Preview</button>
+            <button onclick="addToCart('Reshade Pack 3', 15)">Add to Cart</button>
         </div>
     </div>
 
@@ -241,7 +249,7 @@
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2025 Custom Reshades Shop | All rights reserved</p>
+        <p>&copy; 2025 Custom Reshades Shop | All rights reserved | <a href="https://discord.gg/3QJuFsu4" target="_blank">Join our Discord</a></p>
     </footer>
 
     <script>
@@ -281,7 +289,7 @@
 
         // Checkout function
         function checkout() {
-            alert("Thank you for your purchase! Please make a ticket in Discord to complete your purchase.");
+            alert("Thank you for your purchase! Please make a ticket in Discord to complete your purchase. Join our Discord: https://discord.gg/3QJuFsu4");
         }
 
         // Toggle Cart Popup
@@ -289,7 +297,6 @@
             const cartPopup = document.getElementById('cart-popup');
             cartPopup.style.display = cartPopup.style.display === 'block' ? 'none' : 'block';
         });
-
     </script>
 
 </body>
