@@ -5,328 +5,290 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Custom Reshades Shop</title>
     <style>
-        /* Global Styles */
-        body {
-            font-family: 'Roboto', sans-serif;
+        /* Reset and Basic Styling */
+        * {
             margin: 0;
             padding: 0;
-            background-image: url('https://i.imgur.com/WXB7Kxf.png');
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url('https://i.imgur.com/WXB7Kxf.png') no-repeat center center fixed;
             background-size: cover;
-            background-position: center;
             color: #fff;
-            overflow-x: hidden;
-            transition: all 0.3s ease-in-out;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Main Content */
-        .main-content {
-            padding-top: 100px;
+        header {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
             text-align: center;
-            width: 100%;
-            padding-bottom: 100px;
         }
 
-        .product-cards {
+        header h1 {
+            font-size: 36px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        header p {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        .product-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 30px;
-            padding: 20px;
+            padding: 40px 20px;
+            flex-grow: 1;
         }
 
         .product-card {
             background-color: rgba(0, 0, 0, 0.6);
-            border-radius: 10px;
             padding: 20px;
+            border-radius: 10px;
+            transition: transform 0.3s ease-in-out;
             text-align: center;
-            transition: all 0.3s ease;
             position: relative;
+            overflow: hidden;
         }
 
         .product-card img {
             max-width: 100%;
             border-radius: 10px;
-            margin-bottom: 20px;
+            transition: opacity 0.3s ease;
         }
 
         .product-card h3 {
             font-size: 24px;
-            margin-bottom: 10px;
+            margin-top: 15px;
+            color: #f0f0f0;
         }
 
         .product-card p {
             font-size: 18px;
-            margin-bottom: 20px;
+            color: #d0d0d0;
+            margin-top: 10px;
         }
 
         .product-card button {
-            background-color: #5a6ab0;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #4c83ff;
             color: white;
             border: none;
-            padding: 12px 20px;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .product-card:hover {
-            outline: 3px solid #007bff;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
         }
 
         .product-card button:hover {
-            background-color: #4a5f9a;
+            background-color: #3262e0;
         }
 
-        /* Cart */
-        .cart {
+        .product-card:hover {
+            transform: scale(1.05);
+        }
+
+        .preview-section {
+            display: none;
             text-align: center;
-            margin-top: 50px;
+            margin-top: 40px;
         }
 
-        .cart ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .cart ul li {
-            font-size: 18px;
-            margin: 10px 0;
-        }
-
-        .cart .total {
-            font-size: 24px;
+        .preview-section img {
+            max-width: 70%;
+            border-radius: 10px;
             margin-top: 20px;
         }
 
-        /* Checkout Button */
-        .checkout-btn {
-            background-color: #5a6ab0;
-            color: white;
-            padding: 15px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 20px;
-            transition: background-color 0.3s;
-        }
-
-        .checkout-btn:hover {
-            background-color: #4a5f9a;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: rgba(0, 0, 0, 0.8);
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            color: #fff;
-        }
-
-        /* Blue Overlay for Sign-in */
-        .blue-overlay {
-            background-color: rgba(0, 0, 255, 0.7);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 999;
-        }
-
-        /* Circular Cart Icon */
-        #cart-icon {
+        .cart-button {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: #007bff;
+            background-color: #ff4444;
+            color: white;
+            font-size: 20px;
             padding: 15px;
             border-radius: 50%;
-            color: white;
-            font-weight: 700;
-            font-size: 1.5rem;
-            cursor: pointer;
-            z-index: 200;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 10px #007bffaa;
-        }
-
-        #cart-count {
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            background: #ff4444;
-            border-radius: 50%;
-            padding: 4px 8px;
-            font-size: 1rem;
-            color: white;
-            font-weight: 900;
-            user-select: none;
-            min-width: 24px;
-            text-align: center;
-        }
-
-        /* Cart Popup */
-        #cart-popup {
-            position: fixed;
-            top: 60px;
-            right: 20px;
-            width: 320px;
-            max-height: 420px;
-            background: rgba(20,20,20,0.95);
-            border-radius: 14px;
-            box-shadow: 0 0 30px #007bffaa;
-            padding: 20px;
-            overflow-y: auto;
-            z-index: 350;
-            display: none;
-            flex-direction: column;
-        }
-
-        #cart-popup h3 {
-            color: #00aaff;
-            margin-bottom: 16px;
-            text-align: center;
-        }
-
-        #cart-items {
-            flex-grow: 1;
-            overflow-y: auto;
-            color: #ddd;
-            font-size: 1.1rem;
-        }
-
-        #cart-items div {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-        }
-
-        #cart-total {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-top: 14px;
-            text-align: right;
-            color: #00d8ff;
-        }
-
-        #checkout-btn-popup {
-            margin-top: 20px;
-            background: #007bff;
             border: none;
-            padding: 14px 0;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: white;
-            border-radius: 12px;
             cursor: pointer;
-            transition: background 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 100;
         }
 
-        #checkout-btn-popup:disabled {
-            background: #555;
-            color: #bbb;
-            cursor: not-allowed;
+        .cart-button span {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #fff;
+            color: #ff4444;
+            padding: 4px 8px;
+            font-size: 14px;
+            border-radius: 50%;
         }
 
-        #checkout-btn-popup:hover:not(:disabled) {
-            background: #005fbb;
+        .cart-popup {
+            display: none;
+            position: fixed;
+            top: 20%;
+            right: 20px;
+            width: 300px;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 200;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+        }
+
+        .cart-popup ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .cart-popup li {
+            color: #fff;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .cart-popup .total {
+            font-size: 18px;
+            margin-top: 20px;
+            color: #ff4444;
+        }
+
+        .checkout-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #4c83ff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .checkout-btn:hover {
+            background-color: #3262e0;
+        }
+
+        footer {
+            background-color: rgba(0, 0, 0, 0.8);
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            color: #fff;
         }
 
     </style>
 </head>
 <body>
 
-    <!-- Blue Overlay -->
-    <div id="blue-overlay" class="blue-overlay"></div>
+    <!-- Header -->
+    <header>
+        <h1>Custom Reshades Shop</h1>
+        <p>Exclusive reshades for a unique gaming experience!</p>
+    </header>
 
-    <!-- Main Content -->
-    <div id="main-content">
-        <div class="product-cards">
-            <div class="product-card">
-                <img src="https://i.imgur.com/WXB7Kxf.png" alt="Reshade Pack 1" id="preview-image">
-                <h3>Reshade Pack 1</h3>
-                <p>$5.00</p>
-                <button onclick="showPreview()">Click Here to Preview</button>
-            </div>
-            <div class="product-card">
-                <img src="https://i.imgur.com/WXB7Kxf.png" alt="Reshade Pack 2" id="preview-image">
-                <h3>Reshade Pack 2</h3>
-                <p>$10.00</p>
-                <button onclick="showPreview()">Click Here to Preview</button>
-            </div>
-            <div class="product-card">
-                <img src="https://i.imgur.com/WXB7Kxf.png" alt="Reshade Pack 3" id="preview-image">
-                <h3>Reshade Pack 3</h3>
-                <p>$15.00</p>
-                <button onclick="showPreview()">Click Here to Preview</button>
-            </div>
+    <!-- Product Container -->
+    <div class="product-container">
+        <div class="product-card">
+            <img src="https://i.imgur.com/WXB7Kxf.png" alt="Reshade Pack 1">
+            <h3>Reshade Pack 1</h3>
+            <p>$5.00</p>
+            <button onclick="previewProduct('https://i.imgur.com/ray0nvn.png')">Click Here to Preview</button>
         </div>
+        <div class="product-card">
+            <img src="https://i.imgur.com/WXB7Kxf.png" alt="Reshade Pack 2">
+            <h3>Reshade Pack 2</h3>
+            <p>$10.00</p>
+            <button onclick="previewProduct('https://i.imgur.com/ray0nvn.png')">Click Here to Preview</button>
+        </div>
+        <div class="product-card">
+            <img src="https://i.imgur.com/WXB7Kxf.png" alt="Reshade Pack 3">
+            <h3>Reshade Pack 3</h3>
+            <p>$15.00</p>
+            <button onclick="previewProduct('https://i.imgur.com/ray0nvn.png')">Click Here to Preview</button>
+        </div>
+    </div>
 
-        <!-- Cart Section -->
-        <div class="cart">
-            <h2>Your Cart</h2>
-            <ul id="cart-items"></ul>
-            <p class="total">Total: $<span id="total-price">0</span></p>
-            <button class="checkout-btn" onclick="checkout()">Checkout</button>
-        </div>
+    <!-- Preview Section -->
+    <div class="preview-section" id="preview-section">
+        <h2>Preview of Selected Reshade</h2>
+        <img src="" alt="Preview" id="preview-image">
+    </div>
+
+    <!-- Cart Button -->
+    <button class="cart-button" id="cart-button">
+        🛒 <span id="cart-count">0</span>
+    </button>
+
+    <!-- Cart Popup -->
+    <div class="cart-popup" id="cart-popup">
+        <h3>Your Cart</h3>
+        <ul id="cart-items"></ul>
+        <p class="total">Total: $<span id="cart-total">0</span></p>
+        <button class="checkout-btn" onclick="checkout()">Checkout</button>
     </div>
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2025 Custom Reshades Shop. All rights reserved.</p>
+        <p>&copy; 2025 Custom Reshades Shop | All rights reserved</p>
     </footer>
 
     <script>
+        // Initialize cart
         let cart = [];
-        let orderId = 0;
+        let cartCount = 0;
 
-        // Sign Up function
-        function signUp() {
-            document.querySelector('body').classList.remove('blurred');
-            document.getElementById('blue-overlay').style.display = 'none'; // Hide the blue overlay
+        // Handle Preview
+        function previewProduct(imageUrl) {
+            const previewSection = document.getElementById('preview-section');
+            const previewImage = document.getElementById('preview-image');
+            previewImage.src = imageUrl;
+            previewSection.style.display = 'block';
         }
 
-        // Show Preview Image when clicked
-        function showPreview() {
-            const previewImage = "https://i.imgur.com/ray0nvn.png"; // New preview image
-            const productImage = event.target.parentElement.querySelector('img');
-            productImage.src = previewImage; // Change image to preview on click
-        }
-
-        // Add item to cart
+        // Update Cart
         function addToCart(item, price) {
             cart.push({ item, price });
-            updateCart();
+            cartCount++;
+            updateCartDisplay();
         }
 
-        // Update Cart UI
-        function updateCart() {
+        // Update Cart Display
+        function updateCartDisplay() {
             const cartItems = document.getElementById('cart-items');
             cartItems.innerHTML = '';
             let totalPrice = 0;
-            cart.forEach((product) => {
+            cart.forEach(product => {
                 const listItem = document.createElement('li');
                 listItem.textContent = `${product.item} - $${product.price}`;
                 cartItems.appendChild(listItem);
                 totalPrice += product.price;
             });
-            document.getElementById('total-price').textContent = totalPrice;
+            document.getElementById('cart-total').textContent = totalPrice;
+            document.getElementById('cart-count').textContent = cartCount;
         }
 
-        // Checkout process
+        // Checkout function
         function checkout() {
-            orderId = Math.floor(Math.random() * 1000000);
-            document.getElementById('order-id').textContent = orderId;
-            alert("Thank you for your purchase! Please make a ticket in Discord to complete your purchase. Order ID: " + orderId);
+            alert("Thank you for your purchase! Please make a ticket in Discord to complete your purchase.");
         }
 
-        // Show the sign-up modal when the page loads
-        window.onload = function() {
-            document.getElementById('blue-overlay').style.display = 'block';
-        }
+        // Toggle Cart Popup
+        document.getElementById('cart-button').addEventListener('click', () => {
+            const cartPopup = document.getElementById('cart-popup');
+            cartPopup.style.display = cartPopup.style.display === 'block' ? 'none' : 'block';
+        });
 
     </script>
 
