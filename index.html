@@ -1,176 +1,303 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Compshades | Reshade for FiveM</title>
-  <style>
-    /* Basic Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Custom Reshades Shop</title>
+    <style>
+        /* Reset and Basic Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body, html {
-      font-family: 'Arial', sans-serif;
-      background-color: #f4f4f4;
-    }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url('https://i.imgur.com/WXB7Kxf.png') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-    /* Hero Section */
-    .hero {
-      position: relative;
-      background-image: url('https://i.imgur.com/WXB7Kxf.png');
-      background-size: cover;
-      background-position: center;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      color: white;
-      padding: 0 20px;
-    }
+        header {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            text-align: center;
+        }
 
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-    }
+        header h1 {
+            font-size: 36px;
+            font-weight: bold;
+            color: #ffffff;
+        }
 
-    .hero-content {
-      z-index: 1;
-    }
+        header p {
+            font-size: 18px;
+            margin-top: 10px;
+        }
 
-    .hero h1 {
-      font-size: 3.5rem;
-      font-weight: 700;
-      margin-bottom: 20px;
-    }
+        .product-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            padding: 40px 20px;
+            flex-grow: 1;
+        }
 
-    .hero p {
-      font-size: 1.5rem;
-      margin-bottom: 30px;
-    }
+        .product-card {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            transition: transform 0.3s ease-in-out;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
 
-    .cta-btn {
-      background-color: #007bff;
-      color: white;
-      padding: 15px 30px;
-      font-size: 1.2rem;
-      border-radius: 5px;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      letter-spacing: 1px;
-    }
+        .product-card img {
+            max-width: 100%;
+            border-radius: 10px;
+            transition: opacity 0.3s ease;
+        }
 
-    .cta-btn:hover {
-      background-color: #0056b3;
-      transform: translateY(-5px);
-    }
+        .product-card h3 {
+            font-size: 24px;
+            margin-top: 15px;
+            color: #f0f0f0;
+        }
 
-    /* Content Section */
-    .content {
-      padding: 80px 20px;
-      text-align: center;
-      background-color: #ffffff;
-      margin-top: -50px;
-    }
+        .product-card p {
+            font-size: 18px;
+            color: #d0d0d0;
+            margin-top: 10px;
+        }
 
-    .content h2 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-      font-weight: 600;
-    }
+        .product-card button {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #4c83ff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
 
-    .content p {
-      font-size: 1.2rem;
-      margin-bottom: 30px;
-      color: #555;
-    }
+        .product-card button:hover {
+            background-color: #3262e0;
+        }
 
-    .cta-btn-secondary {
-      background-color: #28a745;
-      color: white;
-      padding: 15px 30px;
-      font-size: 1.2rem;
-      border-radius: 5px;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      letter-spacing: 1px;
-    }
+        .product-card:hover {
+            transform: scale(1.05);
+        }
 
-    .cta-btn-secondary:hover {
-      background-color: #218838;
-      transform: translateY(-5px);
-    }
+        .preview-section {
+            display: none;
+            text-align: center;
+            margin-top: 40px;
+        }
 
-    /* Footer Section */
-    .footer {
-      background-color: #333;
-      color: white;
-      text-align: center;
-      padding: 20px;
-      font-size: 1rem;
-    }
+        .preview-section img {
+            max-width: 70%;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
 
-    .footer a {
-      color: #007bff;
-      text-decoration: none;
-      font-weight: bold;
-    }
+        .cart-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            font-size: 20px;
+            padding: 15px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+        }
 
-    .footer a:hover {
-      text-decoration: underline;
-    }
+        .cart-button span {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #fff;
+            color: #ff4444;
+            padding: 4px 8px;
+            font-size: 14px;
+            border-radius: 50%;
+        }
 
-    /* Media Queries for Mobile */
-    @media (max-width: 768px) {
-      .hero h1 {
-        font-size: 2.5rem;
-      }
-      .hero p {
-        font-size: 1.2rem;
-      }
-      .cta-btn, .cta-btn-secondary {
-        padding: 12px 25px;
-      }
-      .content h2 {
-        font-size: 2rem;
-      }
-      .content p {
-        font-size: 1rem;
-      }
-    }
-  </style>
+        .cart-popup {
+            display: none;
+            position: fixed;
+            top: 20%;
+            right: 20px;
+            width: 300px;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 200;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+        }
+
+        .cart-popup ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .cart-popup li {
+            color: #fff;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .cart-popup .total {
+            font-size: 18px;
+            margin-top: 20px;
+            color: #ff4444;
+        }
+
+        .checkout-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #4c83ff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .checkout-btn:hover {
+            background-color: #3262e0;
+        }
+
+        footer {
+            background-color: rgba(0, 0, 0, 0.8);
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            color: #fff;
+        }
+
+        footer a {
+            color: #4c83ff;
+            text-decoration: none;
+        }
+
+    </style>
 </head>
 <body>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Compshades</h1>
-      <p>Your ultimate reshade for FiveM</p>
-      <a href="https://discord.gg/3QJuFsu4" class="cta-btn">Join Our Discord</a>
+    <!-- Header -->
+    <header>
+        <h1>Custom Reshades Shop</h1>
+        <p>Exclusive reshades for a unique gaming experience!</p>
+    </header>
+
+    <!-- Product Container -->
+    <div class="product-container">
+        <div class="product-card">
+            <img src="https://i.imgur.com/WXB7Kxf.png" alt="Reshade Pack 1" id="preview-image">
+            <h3>Reshade Pack 1</h3>
+            <p>$5.00</p>
+            <button onclick="previewProduct('https://i.imgur.com/ray0nvn.png')">Click Here to Preview</button>
+            <button onclick="addToCart('Reshade Pack 1', 5)">Add to Cart</button>
+        </div>
+        <div class="product-card">
+            <img src="https://i.imgur.com/WXB7Kxf.png" alt="Reshade Pack 2" id="preview-image">
+            <h3>Reshade Pack 2</h3>
+            <p>$10.00</p>
+            <button onclick="previewProduct('https://i.imgur.com/ray0nvn.png')">Click Here to Preview</button>
+            <button onclick="addToCart('Reshade Pack 2', 10)">Add to Cart</button>
+        </div>
+        <div class="product-card">
+            <img src="https://i.imgur.com/WXB7Kxf.png" alt="Reshade Pack 3" id="preview-image">
+            <h3>Reshade Pack 3</h3>
+            <p>$15.00</p>
+            <button onclick="previewProduct('https://i.imgur.com/ray0nvn.png')">Click Here to Preview</button>
+            <button onclick="addToCart('Reshade Pack 3', 15)">Add to Cart</button>
+        </div>
     </div>
-  </section>
 
-  <!-- Content Section -->
-  <section class="content">
-    <h2>Enhance Your FiveM Experience</h2>
-    <p>Get the best Reshade for your FiveM gameplay. Perfect for all FiveM players looking to upgrade their visual experience.</p>
-    <a href="https://compshades.github.io/compshades/" class="cta-btn-secondary">Visit Our Website</a>
-  </section>
+    <!-- Preview Section -->
+    <div class="preview-section" id="preview-section">
+        <h2>Preview of Selected Reshade</h2>
+        <img src="" alt="Preview" id="preview-image">
+    </div>
 
-  <!-- Footer Section -->
-  <footer class="footer">
-    <p>Stay connected with us:</p>
-    <p><a href="https://discord.gg/3QJuFsu4">Discord</a> | <a href="https://compshades.github.io/compshades/">Website</a></p>
-  </footer>
+    <!-- Cart Button -->
+    <button class="cart-button" id="cart-button">
+        🛒 <span id="cart-count">0</span>
+    </button>
+
+    <!-- Cart Popup -->
+    <div class="cart-popup" id="cart-popup">
+        <h3>Your Cart</h3>
+        <ul id="cart-items"></ul>
+        <p class="total">Total: $<span id="cart-total">0</span></p>
+        <button class="checkout-btn" onclick="checkout()">Checkout</button>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Custom Reshades Shop | All rights reserved | <a href="https://discord.gg/3QJuFsu4" target="_blank">Join our Discord</a></p>
+    </footer>
+
+    <script>
+        // Initialize cart
+        let cart = [];
+        let cartCount = 0;
+
+        // Handle Preview
+        function previewProduct(imageUrl) {
+            const previewSection = document.getElementById('preview-section');
+            const previewImage = document.getElementById('preview-image');
+            previewImage.src = imageUrl;
+            previewSection.style.display = 'block';
+        }
+
+        // Update Cart
+        function addToCart(item, price) {
+            cart.push({ item, price });
+            cartCount++;
+            updateCartDisplay();
+        }
+
+        // Update Cart Display
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cart-items');
+            cartItems.innerHTML = '';
+            let totalPrice = 0;
+            cart.forEach(product => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${product.item} - $${product.price}`;
+                cartItems.appendChild(listItem);
+                totalPrice += product.price;
+            });
+            document.getElementById('cart-total').textContent = totalPrice;
+            document.getElementById('cart-count').textContent = cartCount;
+        }
+
+        // Checkout function
+        function checkout() {
+            alert("Thank you for your purchase! Please make a ticket in Discord to complete your purchase. Join our Discord: https://discord.gg/3QJuFsu4");
+        }
+
+        // Toggle Cart Popup
+        document.getElementById('cart-button').addEventListener('click', () => {
+            const cartPopup = document.getElementById('cart-popup');
+            cartPopup.style.display = cartPopup.style.display === 'block' ? 'none' : 'block';
+        });
+    </script>
 
 </body>
 </html>
