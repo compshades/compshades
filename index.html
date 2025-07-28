@@ -13,30 +13,35 @@
             padding: 0;
             background-image: url('https://i.imgur.com/WXB7Kxf.png');
             background-size: cover;
-            color: #fff;
+            background-position: center;
             height: 100vh;
-            overflow: hidden;
+            color: #fff;
             transition: filter 0.3s ease-in-out;
+            overflow-x: hidden;
         }
 
-        /* Blurred Background */
-        .blurred {
-            filter: blur(8px);
-            pointer-events: none;
-        }
-
-        /* Header */
-        header {
+        /* Main Layout */
+        .container {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 60px;
+        }
+
+        header {
+            width: 100%;
             padding: 20px;
             background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
             z-index: 100;
         }
 
         .header-container h1 {
             font-size: 36px;
-            color: #fff;
         }
 
         .discord-link a {
@@ -52,11 +57,45 @@
             background-color: #5a6ab0;
         }
 
-        /* Buttons and Links */
+        .main-content {
+            width: 80%;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding-top: 100px;
+        }
+
+        .product-card {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .product-card:hover {
+            transform: scale(1.05);
+        }
+
+        .product-card h3 {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+
+        .product-card p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
         .btn {
             padding: 10px 20px;
             background-color: #5a6ab0;
-            color: white;
+            color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -65,6 +104,28 @@
 
         .btn:hover {
             background-color: #4a5f9a;
+        }
+
+        /* Cart Section */
+        .cart {
+            text-align: center;
+            margin-top: 30px;
+            width: 100%;
+        }
+
+        .cart ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .cart ul li {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .total {
+            font-size: 24px;
+            margin-top: 10px;
         }
 
         /* Modal Styles */
@@ -77,35 +138,45 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
         }
 
         .modal-content {
-            background-color: #fff;
+            background-color: #fefefe;
             padding: 30px;
             margin: 10% auto;
             width: 80%;
             max-width: 500px;
             border-radius: 10px;
             color: #000;
+            text-align: center;
         }
 
         .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
             position: absolute;
             top: 10px;
             right: 20px;
-            font-size: 24px;
             cursor: pointer;
         }
 
-        /* Sign In / Sign Up Forms */
-        .account-form {
+        .close:hover,
+        .close:focus {
+            color: black;
+        }
+
+        /* Sign Up / Sign In */
+        .form-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px;
         }
 
-        .account-form input {
+        .form-container input {
             padding: 10px;
             margin: 10px 0;
             width: 80%;
@@ -113,29 +184,17 @@
             border: 1px solid #ccc;
         }
 
-        .account-form button {
+        .form-container button {
             padding: 10px 20px;
             background-color: #7289da;
-            color: white;
+            color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
 
-        .account-form button:hover {
+        .form-container button:hover {
             background-color: #5a6ab0;
-        }
-
-        /* Cart & Checkout Section */
-        .cart {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        /* Pricing & Items */
-        .reshade-item {
-            text-align: center;
-            margin: 20px;
         }
 
         /* Footer */
@@ -147,13 +206,6 @@
             bottom: 0;
             width: 100%;
             color: #fff;
-        }
-
-        /* Hide Preview Image Initially */
-        #reshade-preview {
-            display: none;
-            margin-top: 20px;
-            text-align: center;
         }
     </style>
 </head>
@@ -169,55 +221,51 @@
     </header>
 
     <!-- Main Content -->
-    <main id="main-content" class="blurred">
-        <!-- Reshade Preview Section -->
-        <section id="reshade-preview">
-            <img src="https://i.imgur.com/ray0nvn.png" alt="Reshade Preview" id="preview-img">
-        </section>
+    <div id="main-content" class="container blurred">
+        <!-- Sign Up / Sign In Modal -->
+        <div id="account-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2>Create an Account</h2>
+                <div class="form-container">
+                    <input type="text" id="username" placeholder="Username" required>
+                    <input type="email" id="email" placeholder="Email" required>
+                    <input type="password" id="password" placeholder="Password" required>
+                    <button onclick="signUp()">Sign Up</button>
+                </div>
+            </div>
+        </div>
 
-        <button class="btn" id="preview-btn">Click Here to Preview</button>
+        <!-- Products Grid -->
+        <div class="main-content">
+            <div class="product-card">
+                <img src="https://i.imgur.com/ray0nvn.png" alt="Reshade Preview">
+                <h3>Reshade Pack 1</h3>
+                <p>$5.00</p>
+                <button class="btn" onclick="addToCart('Reshade Pack 1', 5)">Add to Cart</button>
+            </div>
 
-        <section class="pricing">
-            <h2>Pricing</h2>
-            <p>Custom reshades available from $5 to $15. Choose your design!</p>
-        </section>
+            <div class="product-card">
+                <img src="https://i.imgur.com/ray0nvn.png" alt="Reshade Preview">
+                <h3>Reshade Pack 2</h3>
+                <p>$10.00</p>
+                <button class="btn" onclick="addToCart('Reshade Pack 2', 10)">Add to Cart</button>
+            </div>
 
-        <!-- Reshade Items -->
-        <section class="reshade-item">
-            <h3>Reshade Pack 1 - $5</h3>
-            <button class="btn" onclick="addToCart('Reshade Pack 1', 5)">Add to Cart</button>
-        </section>
-
-        <section class="reshade-item">
-            <h3>Reshade Pack 2 - $10</h3>
-            <button class="btn" onclick="addToCart('Reshade Pack 2', 10)">Add to Cart</button>
-        </section>
-
-        <section class="reshade-item">
-            <h3>Reshade Pack 3 - $15</h3>
-            <button class="btn" onclick="addToCart('Reshade Pack 3', 15)">Add to Cart</button>
-        </section>
+            <div class="product-card">
+                <img src="https://i.imgur.com/ray0nvn.png" alt="Reshade Preview">
+                <h3>Reshade Pack 3</h3>
+                <p>$15.00</p>
+                <button class="btn" onclick="addToCart('Reshade Pack 3', 15)">Add to Cart</button>
+            </div>
+        </div>
 
         <!-- Cart Section -->
-        <section class="cart">
+        <div class="cart">
             <h2>Your Cart</h2>
             <ul id="cart-items"></ul>
-            <p>Total: $<span id="total-price">0</span></p>
+            <p class="total">Total: $<span id="total-price">0</span></p>
             <button class="btn" onclick="checkout()">Checkout</button>
-        </section>
-    </main>
-
-    <!-- Sign In / Sign Up Modal -->
-    <div id="account-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2>Create an Account</h2>
-            <div class="account-form">
-                <input type="text" id="username" placeholder="Username" required>
-                <input type="email" id="email" placeholder="Email" required>
-                <input type="password" id="password" placeholder="Password" required>
-                <button onclick="createAccount()">Sign Up</button>
-            </div>
         </div>
     </div>
 
@@ -240,9 +288,8 @@
         let cart = [];
         let orderId = 0;
 
-        // Account Creation (Sign Up)
-        function createAccount() {
-            // For demo purposes, simulate account creation success
+        // Handle Sign Up
+        function signUp() {
             document.querySelector('main').classList.remove('blurred');
             document.getElementById('account-modal').style.display = 'none';
         }
@@ -253,7 +300,7 @@
             updateCart();
         }
 
-        // Update the cart UI
+        // Update cart UI
         function updateCart() {
             const cartItems = document.getElementById('cart-items');
             cartItems.innerHTML = '';
@@ -269,23 +316,18 @@
 
         // Checkout process
         function checkout() {
-            orderId = Math.floor(Math.random() * 1000000); // Generate a random order ID
+            orderId = Math.floor(Math.random() * 1000000);
             document.getElementById('order-id').textContent = orderId;
             document.getElementById('checkout-modal').style.display = 'block';
         }
 
-        // Close modal
+        // Close modals
         function closeModal() {
             document.getElementById('checkout-modal').style.display = 'none';
             document.getElementById('account-modal').style.display = 'none';
         }
 
-        // Show Preview when "Click Here to Preview" is clicked
-        document.getElementById('preview-btn').addEventListener('click', function() {
-            document.getElementById('reshade-preview').style.display = 'block';
-        });
-
-        // Show Sign Up Modal when page loads
+        // Show Sign Up Modal
         window.onload = function() {
             document.getElementById('account-modal').style.display = 'block';
         }
